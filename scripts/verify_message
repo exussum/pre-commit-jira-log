@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import sys
+import re
+import os
+
+if __name__ == "__main__":
+    if os.environ.get("JIRA_PROJECTS"):
+        prefix = f"^({'|'.join(os.environ.get('JIRA_PROJECTS').split(' '))})"
+    else:
+        prefix = '^[\w\d]+'
+
+    project_re = re.compile(prefix + "-\d+: ")
+    print(project_re)
+
+    for line in open(sys.argv[1]):
+        if re.match(line, "^\s+$"):
+            continue
+        elif project_re.match(line):
+            exit()
+        else:
+            print("Commits must start with the format 'EXAMPLE-1234: '", file=sys.stderr)
+            if os.environ.get("JIRA_PROJECTS"):
+                print(f"Replace EXAMPLE with any of the following project keys: {os.environ.get('JIRA_PROJECTS')}", file=sys.stderr)
+            exit(1)

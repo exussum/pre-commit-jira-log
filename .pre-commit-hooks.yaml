@@ -1,0 +1,12 @@
+-   id: populate-message
+    name: Prepopulate commit message
+    description: Prepopulates commit message with valid jira project names
+    entry: populate_message
+    language: python
+    stages: [prepare-commit-msg]
+-   id: enforce-message
+    name: Enforce jira ticket prefixes
+    description: Enforces jira log messages to be proper
+    entry: verify_message 
+    language: python
+    stages: [commit-msg]

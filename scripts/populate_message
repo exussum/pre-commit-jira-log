@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import re, sys, subprocess, os
+
+BRANCH_COMMAND = ("git", "rev-parse", "--abbrev-ref", "HEAD")
+EXAMPLE_ID = "EXAMPLE-123"
+FILE = sys.argv[1]
+
+if __name__ == "__main__":
+    if os.environ.get("GIT_EDITOR") == ":":
+        exit()
+
+    branch_cmd = subprocess.run(BRANCH_COMMAND, stdout=subprocess.PIPE)
+    id = re.search(r"(^\w+-\w+)", str(branch_cmd.stdout))
+    id = id.groups(EXAMPLE_ID)[1] if id else EXAMPLE_ID
+
+
+    with open(FILE) as fh:
+        msg = fh.readlines()
+        if id == EXAMPLE_ID:
+            instr = f"# Please replace {id} with the id of the Jira card this is for.\n# Git branches with a prefix of their card id will prepopulate the commit message."
+        else:
+            instr = f"# All commit messages must be prefixed with their jira card ids."
+        instr += f"\n\n{id}: \n"
+
+    msg.insert(0, instr)
+
+    with open(FILE, "w") as fh:
+        fh.write("".join(msg))

@@ -10,8 +10,7 @@ if __name__ == "__main__":
     else:
         prefix = '^[\w\d]+'
 
-    project_re = re.compile(prefix + "-\d+: ")
-    print(project_re)
+    project_re = re.compile(prefix + '-\d+: ')
 
     for line in open(sys.argv[1]):
         if re.match(line, "^\s+$"):

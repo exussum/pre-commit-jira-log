@@ -1,4 +1,4 @@
-#!/Users/spence/.cache/pre-commit/repo51vvjcpn/py_env-python3/bin/python
+#!/Users/spence/.cache/pre-commit/repo4haak_w8/py_env-python3/bin/python
 
 import re, sys, subprocess, os
 
@@ -11,9 +11,8 @@ if __name__ == "__main__":
         exit()
 
     branch_cmd = subprocess.run(BRANCH_COMMAND, stdout=subprocess.PIPE)
-    id = re.search(r"(^\w+-\w+)", str(branch_cmd.stdout))
-    id = id.groups(EXAMPLE_ID)[1] if id else EXAMPLE_ID
-
+    id = re.search(r'(^\w+-\d+)', branch_cmd.stdout.decode("utf-8"))
+    id = id.groups(EXAMPLE_ID)[0] if id else EXAMPLE_ID
 
     with open(FILE) as fh:
         msg = fh.readlines()
@@ -23,7 +22,7 @@ if __name__ == "__main__":
             else:
                 instr = f"\n\n# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: \n#`"
         else:
-            instr = f"\n\n# All commit messages must be prefixed with their jira card ids.\n#\n#"
+            instr = f"{id.upper()}:\n\n# All commit messages must be prefixed with their jira card ids.\n#\n#"
 
     msg.insert(0, instr)
 

@@ -16,12 +16,14 @@ if __name__ == "__main__":
 
 
     with open(FILE) as fh:
-        msg = fh.readlines()
         instr = f"\n\n{id}: \n"
         if id == EXAMPLE_ID:
-            instr += f"# Please replace {id} with the id of the Jira card this is for.\n# Git branches with a prefix of their card id will prepopulate the commit message."
+            if os.environ.get('JIRA_PROJECTS'):
+                instr = f"# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: ` replacing EXAMPLE with any of the following {os.environ.get('JIRA_PROJECTS')}\n#\n"
+            else:
+                instr = f"# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: \n#\n`
         else:
-            instr += f"# All commit messages must be prefixed with their jira card ids."
+            instr = f"# All commit messages must be prefixed with their jira card ids.\n#\n#\n"
 
     msg.insert(0, instr)
 

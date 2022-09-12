@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/Users/spence/.cache/pre-commit/repo51vvjcpn/py_env-python3/bin/python
 
 import re, sys, subprocess, os
 
@@ -16,14 +16,14 @@ if __name__ == "__main__":
 
 
     with open(FILE) as fh:
-        instr = f"\n\n{id}: \n"
+        msg = fh.readlines()
         if id == EXAMPLE_ID:
             if os.environ.get('JIRA_PROJECTS'):
-                instr = f"# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: ` replacing EXAMPLE with any of the following {os.environ.get('JIRA_PROJECTS')}\n#\n"
+                instr = f"\n\n# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: ` replacing EXAMPLE with any of the following {os.environ.get('JIRA_PROJECTS')}\n#"
             else:
-                instr = f"# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: \n#\n`
+                instr = f"\n\n# All commit messages must be prefixed with their jira card ids.\n# e.g. `EXAMPLE-123: \n#`"
         else:
-            instr = f"# All commit messages must be prefixed with their jira card ids.\n#\n#\n"
+            instr = f"\n\n# All commit messages must be prefixed with their jira card ids.\n#\n#"
 
     msg.insert(0, instr)
 

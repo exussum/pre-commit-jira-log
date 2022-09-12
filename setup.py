@@ -12,5 +12,5 @@ setup(
     version="1.0.0",
     description="Pre-commit jira utilities",
     author="spencer portée",
-    install_requires=["PyGithub==1.55", "docopt==0.6.2", "gitpython==3.1.27"],
+    install_requires=["PyGithub==1.55", "docopt>=0.4.0,<0.5.0", "gitpython==3.1.27"],
 )

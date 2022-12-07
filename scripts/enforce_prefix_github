@@ -50,7 +50,7 @@ if __name__ == "__main__":
         if not project_re.match(commit.message)
     ]
     if bad_commits:
-        err = 'The following commits do not follow the format "KEY-123:"\n'
+        err = 'The following commits do not follow the format "KEY-123: commit message..."\n'
         err += (
             f"Where KEY is one of the following project keys: {', '.join(r.keys)}\n\n"
         )

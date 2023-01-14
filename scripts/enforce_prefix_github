@@ -25,7 +25,7 @@ ARGS = ("--root", "--sha1", "--sha2", "<project-key>", "--token", "--pr", "--rep
 
 
 def args_to_nt(args):
-    return nt("Data", "path, sha1, sha2, keys, token, pr repo")(
+    return nt("Data", "path, sha1, sha2, keys, token, pr, repo")(
         *[args[e] for e in ARGS]
     )
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     r = args_to_nt(docopt(__doc__))
 
     if not Path(r.path).exists():
-        err(f"{path} does not exist")
+        print(f"{r.path} does not exist")
         exit(1)
 
     repo = Repo(r.path)
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         repo.iter_commits(rev=f"{x}..{y}")
         for (x, y) in ((r.sha1, r.sha2), (r.sha2, r.sha1))
     ]
-    project_re = re.compile(f"^{'|'.join(re.escape(e) for e in r.keys)}:")
+    project_re = re.compile(f"^({'|'.join(re.escape(e) for e in r.keys)})-\\d+: ")
 
     bad_commits = [
         commit
